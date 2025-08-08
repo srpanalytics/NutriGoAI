@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from recommender import Recommender
 from utils import calc_bmr, activity_multiplier, nutrient_targets
 import config
+import os
 
 app = Flask(__name__)
 
@@ -69,4 +70,9 @@ def index():
     
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8050))  # Default to 8050 for local dev
+    app.run(host="0.0.0.0", port=port)
+
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
