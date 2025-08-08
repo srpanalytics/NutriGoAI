@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="results-section">
+  <h2 class="section-title">{{ message }}</h2>
+
+  {% if targets %}
+    <div class="targets-summary">
+      <strong>Your Targets:</strong>
+      <ul>
+        <li>Calories: {{ targets.calories | round }} kcal</li>
+        <li>Protein: {{ targets.protein_g | round(1) }} g</li>
+        <li>Fat: {{ targets.fat_g | round(1) }} g</li>
+        <li>Carbs: {{ targets.carbs_g | round(1) }} g</li>
+      </ul>
+    </div>
+  {% endif %}
+
+  {% if results %}
+    <table class="results-table" role="table" aria-describedby="tableCaption">
+      <caption id="tableCaption" class="sr-only">Top recommended foods based on your profile</caption>
+      <thead>
+        <tr>
+          <th scope="col">Rank</th>
+          {% for col in results[0].keys() %}
+            <th scope="col">{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in results %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            {% for val in row.values() %}
+              <td>{{ val }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="no-results">No recommendations found.</p>
+  {% endif %}
+
+  <a href="{{ url_for('index') }}" class="btn-secondary">&larr; Back</a>
+</section>
+{% endblock %}
