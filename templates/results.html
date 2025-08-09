@@ -1,47 +1,45 @@
 {% extends "base.html" %}
-
 {% block content %}
-<section class="results-section">
+<div class="card results">
   <h2 class="section-title">{{ message }}</h2>
 
   {% if targets %}
-    <div class="targets-summary">
-      <strong>Your Targets:</strong>
-      <ul>
-        <li>Calories: {{ targets.calories | round }} kcal</li>
-        <li>Protein: {{ targets.protein_g | round(1) }} g</li>
-        <li>Fat: {{ targets.fat_g | round(1) }} g</li>
-        <li>Carbs: {{ targets.carbs_g | round(1) }} g</li>
-      </ul>
-    </div>
+  <div class="targets-row">
+    <span>🔸 <strong>Calories:</strong> {{ targets.calories }} kcal</span>
+    <span>🔸 <strong>Protein:</strong> {{ targets.protein_g }} g</span>
+    <span>🔸 <strong>Fat:</strong> {{ targets.fat_g }} g</span>
+    <span>🔸 <strong>Carbs:</strong> {{ targets.carbs_g }} g</span>
+  </div>
   {% endif %}
 
   {% if results %}
-    <table class="results-table" role="table" aria-describedby="tableCaption">
-      <caption id="tableCaption" class="sr-only">Top recommended foods based on your profile</caption>
-      <thead>
-        <tr>
-          <th scope="col">Rank</th>
-          {% for col in results[0].keys() %}
-            <th scope="col">{{ col }}</th>
-          {% endfor %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in results %}
-          <tr>
-            <td>{{ loop.index }}</td>
-            {% for val in row.values() %}
-              <td>{{ val }}</td>
-            {% endfor %}
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="food-list">
+    {% for row in results %}
+    <div class="food-card">
+      <div>
+        <span class="food-rank">#{{ loop.index }}</span>
+        <h3 class="food-name">{{ row.Food }}</h3>
+      </div>
+      <ul class="food-info">
+        <li><strong>Calories:</strong> {{ row.Calories }}</li>
+        <li><strong>Protein:</strong> {{ row.Protein }} g</li>
+        <li><strong>Fiber:</strong> {{ row.Fiber }} g</li>
+        <li><strong>Sugar:</strong> {{ row.Sugar }} g</li>
+        <li class="highlight">
+          {% if row.Protein >= 10 %}<span class="badge protein">High Protein</span>
+          {% elif row.Fiber >= 8 %}<span class="badge fiber">High Fiber</span>
+          {% elif row.Sugar <= 2 %}<span class="badge sugar">Low Sugar</span>
+          {% elif row.Calories <= 50 %}<span class="badge calorie">Low Calorie</span>
+          {% else %}-{% endif %}
+        </li>
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
   {% else %}
-    <p class="no-results">No recommendations found.</p>
+    <p class="empty-note">No recommendations found.</p>
   {% endif %}
 
   <a href="{{ url_for('index') }}" class="btn-secondary">&larr; Back</a>
-</section>
+</div>
 {% endblock %}

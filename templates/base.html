@@ -4,22 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Personalized Food Recommender</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-  <div class="container">
-    <header class="header">
-      <h1>Personalized Food Recommender</h1>
-      <p class="subtitle">Enter your details and goals to receive top food recommendations tailored to you.</p>
-    </header>
-    <main>
-      {% block content %}{% endblock %}
-    </main>
-    <footer class="footer">
-      <small>Demo app — not a medical advice tool.</small>
-      <br>
-      <small>Developed by Soumya Ranjan patra <small>
-    </footer>
-  </div>
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1><span class="icon">🥗</span> Personalized Food Recommender</h1>
+      <p class="subtitle">
+        Discover nourishing, delicious foods tailored for your body, lifestyle, and goals.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <hr>
+    <div class="footer-content">
+      Demo app — Not medical advice.<br>
+      Crafted by Soumya Ranjan Patra
+    </div>
+  </footer>
 </body>
 </html>

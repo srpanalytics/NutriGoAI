@@ -1,21 +1,11 @@
 def calc_bmr(weight_kg, height_cm, age, gender):
-    """
-    Mifflin-St Jeor equation
-    gender: 'male' or 'female'
-    """
     gender = (gender or "").lower()
     if gender in ("m", "male"):
-        bmr = 10 * weight_kg + 6.25 * height_cm - 5 * age + 5
+        return 10 * weight_kg + 6.25 * height_cm - 5 * age + 5
     else:
-        bmr = 10 * weight_kg + 6.25 * height_cm - 5 * age - 161
-    return bmr
-
+        return 10 * weight_kg + 6.25 * height_cm - 5 * age - 161
 
 def activity_multiplier(level):
-    """
-    Returns multiplier for BMR to get TDEE.
-    Accepts: sedentary, light, moderate, active, very_active
-    """
     mapping = {
         "sedentary": 1.2,
         "light": 1.375,
@@ -25,12 +15,7 @@ def activity_multiplier(level):
     }
     return mapping.get((level or "moderate").lower(), 1.55)
 
-
 def nutrient_targets(tdee, goal, weight_kg):
-    """
-    Returns macro targets: calories (kcal), protein/fat/carbs in grams.
-    goal: loss, maintenance, gain, muscle
-    """
     goal = (goal or "maintenance").lower()
     if goal == "loss":
         calories = max(tdee - 500, 1200)
@@ -57,11 +42,8 @@ def nutrient_targets(tdee, goal, weight_kg):
         "carbs_g": round(carbs_g, 1),
     }
 
-
 def safe_div(a, b):
     try:
-        if b == 0:
-            return 0.0
-        return a / b
+        return a / b if b else 0.0
     except Exception:
         return 0.0

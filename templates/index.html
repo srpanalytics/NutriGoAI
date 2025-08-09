@@ -1,95 +1,74 @@
 {% extends "base.html" %}
-
 {% block content %}
-<section class="form-section">
-  <h2 class="section-title">Tell us about yourself</h2>
-
+<div class="card input-card">
+  <h2>Enter Your Details</h2>
   {% if error %}
-    <div class="alert error" role="alert">{{ error }}</div>
+    <div class="alert error">{{ error }}</div>
   {% endif %}
 
-  <form method="post" novalidate class="user-form" autocomplete="off">
+  <form method="post" class="form-grid">
     <div class="form-group">
-      <label for="weight">Weight (kg) *</label>
-      <input
-        type="number"
-        id="weight"
-        name="weight"
-        min="1"
-        step="0.1"
-        value="{{ request.form.weight or 70 }}"
-        required
-        placeholder="e.g. 70"
-        aria-describedby="weightHelp"
-      />
-      <small id="weightHelp" class="input-help">Your current weight in kilograms.</small>
+      <label>Weight <span>(kg)</span></label>
+      <input type="number" name="weight" min="1" step="0.1" required placeholder="e.g. 70"
+             value="{{ request.form.weight or '' }}">
     </div>
-
     <div class="form-group">
-      <label for="height">Height (cm) *</label>
-      <input
-        type="number"
-        id="height"
-        name="height"
-        min="30"
-        max="300"
-        step="0.1"
-        value="{{ request.form.height or 170 }}"
-        required
-        placeholder="e.g. 170"
-        aria-describedby="heightHelp"
-      />
-      <small id="heightHelp" class="input-help">Your height in centimeters.</small>
+      <label>Height <span>(cm)</span></label>
+      <input type="number" name="height" min="30" max="300" step="0.1" required placeholder="e.g. 170"
+             value="{{ request.form.height or '' }}">
     </div>
-
     <div class="form-group">
-      <label for="age">Age (years)</label>
-      <input
-        type="number"
-        id="age"
-        name="age"
-        min="10"
-        max="120"
-        value="{{ request.form.age or 30 }}"
-        placeholder="e.g. 30"
-        aria-describedby="ageHelp"
-      />
-      <small id="ageHelp" class="input-help">Optional: Your age for better accuracy.</small>
+      <label>Age <span>(years)</span></label>
+      <input type="number" name="age" min="10" max="120" placeholder="e.g. 30"
+             value="{{ request.form.age or '' }}">
     </div>
-
     <div class="form-group">
-      <label for="gender">Gender *</label>
-      <select id="gender" name="gender" required>
-        <option value="" disabled {% if not request.form.gender %}selected{% endif %}>Select gender</option>
-        <option value="male" {% if (request.form.gender or '') == 'male' %}selected{% endif %}>Male</option>
-        <option value="female" {% if (request.form.gender or '') == 'female' %}selected{% endif %}>Female</option>
+      <label>Gender<span>*</span></label>
+      <select name="gender" required>
+        <option value="" {% if not request.form.gender %}selected{% endif %}>Select gender</option>
+        <option value="male" {% if request.form.gender == "male" %}selected{% endif %}>Male</option>
+        <option value="female" {% if request.form.gender == "female" %}selected{% endif %}>Female</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Activity Level<span>*</span></label>
+      <select name="activity" required>
+        <option value="" {% if not request.form.activity %}selected{% endif %}>Select activity</option>
+        <option value="sedentary" {% if request.form.activity == "sedentary" %}selected{% endif %}>Sedentary</option>
+        <option value="light" {% if request.form.activity == "light" %}selected{% endif %}>Light</option>
+        <option value="moderate" {% if request.form.activity == "moderate" %}selected{% endif %}>Moderate</option>
+        <option value="active" {% if request.form.activity == "active" %}selected{% endif %}>Active</option>
+        <option value="very_active" {% if request.form.activity == "very_active" %}selected{% endif %}>Very Active</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Goal<span>*</span></label>
+      <select name="goal" required>
+        <option value="" {% if not request.form.goal %}selected{% endif %}>Select goal</option>
+        <option value="maintenance" {% if request.form.goal == "maintenance" %}selected{% endif %}>Maintenance</option>
+        <option value="loss" {% if request.form.goal == "loss" %}selected{% endif %}>Weight Loss</option>
+        <option value="gain" {% if request.form.goal == "gain" %}selected{% endif %}>Weight Gain</option>
+        <option value="muscle" {% if request.form.goal == "muscle" %}selected{% endif %}>Muscle Gain</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Food Preference</label>
+      <select name="food_pref">
+        <option value="">Any</option>
+        <option value="Veg" {% if request.form.food_pref == "Veg" %}selected{% endif %}>Veg</option>
+        <option value="Non-Veg" {% if request.form.food_pref == "Non-Veg" %}selected{% endif %}>Non-Veg</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Nutrient Focus</label>
+      <select name="nutrient_focus">
+        {% for nf in nutrient_focus_list %}
+          <option value="{{ nf }}" {% if request.form.nutrient_focus == nf %}selected{% endif %}>{{ nf }}</option>
+        {% endfor %}
       </select>
     </div>
 
-    <div class="form-group">
-      <label for="activity">Activity Level *</label>
-      <select id="activity" name="activity" required>
-        <option value="" disabled {% if not request.form.activity %}selected{% endif %}>Select activity level</option>
-        <option value="sedentary" {% if (request.form.activity or '') == 'sedentary' %}selected{% endif %}>Sedentary</option>
-        <option value="light" {% if (request.form.activity or '') == 'light' %}selected{% endif %}>Light</option>
-        <option value="moderate" {% if (request.form.activity or '') == 'moderate' %}selected{% endif %}>Moderate</option>
-        <option value="active" {% if (request.form.activity or '') == 'active' %}selected{% endif %}>Active</option>
-        <option value="very_active" {% if (request.form.activity or '') == 'very_active' %}selected{% endif %}>Very Active</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="goal">Goal *</label>
-      <select id="goal" name="goal" required>
-        <option value="" disabled {% if not request.form.goal %}selected{% endif %}>Select goal</option>
-        <option value="maintenance" {% if (request.form.goal or '') == 'maintenance' %}selected{% endif %}>Maintenance</option>
-        <option value="loss" {% if (request.form.goal or '') == 'loss' %}selected{% endif %}>Weight Loss</option>
-        <option value="gain" {% if (request.form.goal or '') == 'gain' %}selected{% endif %}>Weight Gain</option>
-        <option value="muscle" {% if (request.form.goal or '') == 'muscle' %}selected{% endif %}>Muscle Gain</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn-primary">Get Recommendations</button>
+    <button type="submit" class="btn-main">Get Recommendations</button>
   </form>
-</section>
+</div>
 {% endblock %}
